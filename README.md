@@ -127,32 +127,7 @@ vibe-frame-kit/
 
 ## 5. 설치 방법
 
-아래 명령으로 저장소를 복제합니다.
-Windows PowerShell:
-```bash
-git clone https://github.com/PieterKim/vibe-frame-kit.git
-cd vibe-frame-kit
-powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
-```
-
-macOS/Linux:
-```bash
-git clone https://github.com/PieterKim/vibe-frame-kit.git
-cd vibe-frame-kit
-chmod +x scripts/install.sh
-./scripts/install.sh
-```
-
-아직 GitHub에 업로드하기 전이라면, 로컬에서 다음과 같이 새 저장소로 사용할 수 있습니다.
-
-```bash
-cd vibe-frame-kit
-git init
-git add .
-git commit -m "Initial commit"
-```
-
-개별 프로젝트에 적용할 때는 필요한 파일과 폴더를 프로젝트 루트로 복사하거나, 이 저장소를 참고 문서용 저장소로 함께 열어두고 사용하면 됩니다.
+Python 3.11+와 Git을 준비하고 [안전한 설치 및 확인](docs/install-test.md)을 따릅니다. 기본은 프로젝트 범위 설치이며 전역 설치는 명시적으로 선택합니다.
 
 ## 6. 사용 예시
 
@@ -186,7 +161,7 @@ Codex에 요청할 때는 다음처럼 단계와 산출물을 명확히 말하�
 
 - Codex가 생성한 코드는 반드시 직접 실행하고 확인해야 합니다.
 - 한 번에 너무 큰 작업을 요청하기보다 작은 기능 단위로 나누어 요청하는 것이 좋습니다.
-- 오류 메시지는 일부만 전달하지 말고 가능한 전체 내용을 함께 제공해야 합니다.
+- 오류의 재현 흐름은 유지하되 토큰·비밀번호·개인정보를 가린 관련 로그를 제공합니다.
 - 프로젝트 요구사항이 바뀌면 README, 요구사항 문서, MVP 문서도 함께 수정해야 합니다.
 - Codex의 제안이 항상 최선은 아니므로 수강생이 직접 판단하고 검토해야 합니다.
 - 팀 프로젝트에서는 파일 수정 전후로 역할과 작업 범위를 명확히 공유해야 합니다.
@@ -214,3 +189,19 @@ DATABASE_URL=your_database_url_here
 이 저장소의 라이선스는 아직 확정되지 않았습니다.
 
 수업, 개인 학습, 팀 프로젝트에서 자유롭게 사용할 수 있도록 공개할 예정이라면 `MIT License`를 권장합니다. 실제 GitHub 저장소로 공개하기 전에는 `LICENSE` 파일을 추가하고, README의 라이선스 안내도 확정된 내용으로 업데이트해야 합니다.
+
+## 공통 기준과 검증
+
+AGENTS.md는 공통 원칙, [routing](agents/routing.md)은 Skill 선택, Skill은 판단·절차, template은 필수 결과 구조, prompt는 작업 요청입니다. [수업 단계와 통과 기준](docs/course-workflow.md)을 기준으로 결과를 비교합니다. `config/codex.config.sample.toml`은 설명용 정책 예시이며 Codex가 읽는 실제 설정이 아닙니다. `config.toml`로 복사하지 않습니다.
+
+- [설치와 실제 Skill 확인](docs/install-test.md)
+- [환경·도구와 남은 결정](docs/environment.md)
+- [선택형 후반 실습](docs/advanced-labs.md)
+- [협업과 발표](docs/team-delivery.md)
+- [대표 예제와 검증 결과](docs/verification-report.md)
+
+저장소 무결성과 설치 동작: `python scripts/verify.py`. 이는 모델의 실제 Skill 선택·응답 품질을 증명하지 않으며 별도 수동 검증이 필요합니다.
+
+## 기존 설치 업데이트
+
+원래 배포 파일을 수정하지 않았다면 명시적 마이그레이션으로 백업 후 덮어쓸 수 있습니다. PowerShell은 `powershell -File scripts/install.ps1 -Scope global -MigrateLegacy -DryRun`, Bash는 `bash scripts/install.sh --scope global --migrate-legacy --dry-run`으로 먼저 확인합니다. 실제 적용 명령과 보존·충돌 조건은 [설치본 업데이트 안내](docs/install-test.md#원래-전역-설치본-업데이트)를 따릅니다. 사용자 수정 파일과 다른 설정은 강제로 덮어쓰지 않습니다.

@@ -1,0 +1,67 @@
+{
+  "base_head": "eb4ff29cafa8cceba238b9d8f81ebaf660a5b904",
+  "date": "2026-11-06",
+  "environment": {
+    "os": "Windows 11",
+    "python": "3.14.6",
+    "codex": "0.142.4",
+    "git": "2.55.0.windows.1",
+    "powershell": "7.6.5",
+    "fastapi": "0.141.1",
+    "pydantic": "2.12.5",
+    "httpx": "0.28.1"
+  },
+  "automated_tests": {
+    "passed": 15,
+    "failed": 0
+  },
+  "skill_validator": {
+    "passed": 10,
+    "failed": 0
+  },
+  "actual_codex_skills_list": {
+    "discovered": 10,
+    "project_errors": 0,
+    "unrelated_existing_global_errors": 10
+  },
+  "wrappers": {
+    "powershell": "passed dry-run/install/reinstall",
+    "git_bash_on_windows": "passed syntax/dry-run/install/reinstall"
+  },
+  "not_run": [
+    "native macOS/Linux",
+    "model-driven explicit skill invocation and routing",
+    "actual AI output quality",
+    "live RAG/LangGraph/MCP",
+    "actual email send",
+    "paid API calls",
+    "manual Swagger browser demo"
+  ],
+  "independent_review_fixes": {
+    "provider_failures": "TimeoutError/ConnectionError/ProviderError and malformed provider output -> 502; unexpected RuntimeError -> sanitized 500",
+    "installed_checker": "executed successfully from project root and global vibe-frame-kit root without original source",
+    "regression": "15 tests passed; Skill discovery 10; Skill validator 10; PowerShell/Git Bash wrappers rechecked"
+  },
+  "legacy_upgrade_integration": {
+    "test_groups_passed": 4,
+    "test_groups_failed": 0,
+    "subscenarios": 14,
+    "wrappers": [
+      "Windows PowerShell",
+      "Windows Git Bash"
+    ],
+    "supported_original_commit": "eb4ff29cafa8cceba238b9d8f81ebaf660a5b904",
+    "verified": [
+      "LF and CRLF originals",
+      "dry-run and unchanged default conflict",
+      "explicit migration and no-op repeat",
+      "existing original Kit replacement",
+      "unrelated config and user additions preserved",
+      "modified original and new-path conflicts stop before writes",
+      "modified managed file after migration preserved",
+      "original backups",
+      "real locked-file failure rollback and successful retry"
+    ],
+    "real_user_global_installation_modified": false
+  }
+}

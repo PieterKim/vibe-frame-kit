@@ -39,31 +39,9 @@
 5. 첫 요구사항 정의 실습 진행
 ```
 
-## 3. 수강생 설치 확인 방법
+## 3. 프로젝트 설치 확인
 
-Windows 기준 설치 명령:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
-```
-
-설치 확인 명령:
-
-```powershell
-dir $HOME\.codex
-dir $HOME\.codex\skills
-```
-
-확인해야 할 항목:
-
-| 항목 | 기대 결과 |
-| --- | --- |
-| `~/.codex/AGENTS.md` | 파일이 존재해야 합니다. |
-| `~/.codex/agents/` | `routing.md`가 있어야 합니다. |
-| `~/.codex/skills/` | 10개 Skill 폴더가 있어야 합니다. |
-| `~/.codex/config/` | `lean-skills.txt`, `codex.config.sample.toml`이 있어야 합니다. |
-
-설치가 실패한 경우에는 PowerShell 실행 위치, 권한, 저장소 압축 해제 여부를 먼저 확인합니다.
+[install-test.md](install-test.md)의 프로젝트 설치를 기본으로 사용합니다. `.agents/skills/`의 10개 Skill, 프로젝트 AGENTS.md와 templates 자료를 확인합니다. 실제 Codex 새 세션의 Skill 목록과 명시 호출을 별도로 확인합니다. config 폴더는 교육 자료이며 실제 Codex 설정이 아닙니다. 전역 설치는 선택 사항입니다.
 
 ## 4. 첫 실습 진행 순서
 
@@ -143,7 +121,7 @@ MVP에서 반드시 실행되어야 하는 흐름은 무엇인가?
 | 순서 | 확인 항목 |
 | --- | --- |
 | 1 | 어떤 명령을 실행했는가? |
-| 2 | 전체 오류 로그는 무엇인가? |
+| 2 | 비밀정보를 가린 관련 오류 흐름은 무엇인가? |
 | 3 | 마지막 에러 메시지는 무엇인가? |
 | 4 | 파일 경로와 줄 번호가 있는가? |
 | 5 | 관련 코드를 확인했는가? |
@@ -258,9 +236,9 @@ API Key, token, password, credentials.json, auth.json, .env 파일이 포함되�
 | 문제 | 원인 | 대응법 |
 | --- | --- | --- |
 | 설치 스크립트가 실행되지 않음 | PowerShell 실행 정책 또는 경로 문제 | `powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1`로 실행하게 합니다. |
-| `~/.codex`에 파일이 없음 | 설치 위치가 잘못되었거나 스크립트 실행 실패 | `dir $HOME\.codex`로 확인하고 다시 설치합니다. |
+| Skill이 보이지 않음 | 설치 경로·세션 갱신 확인 필요 | 프로젝트 `.agents/skills/`와 새 세션 목록을 확인합니다. |
 | 수강생이 전체 서비스를 한 번에 요청함 | 개발 범위를 줄이는 경험 부족 | 요구사항 정의와 MVP 설계부터 다시 진행시킵니다. |
-| 오류 로그 없이 질문함 | 에러 메시지의 중요성을 모름 | 실행 명령, 전체 로그, 관련 파일을 함께 보내게 합니다. |
+| 오류 로그 없이 질문함 | 에러 메시지의 중요성을 모름 | 실행 명령, 비밀정보를 가린 관련 로그, 관련 파일을 함께 보내게 합니다. |
 | API Key가 코드에 들어감 | 환경 변수 사용 경험 부족 | `.env`와 `.env.example` 차이를 다시 설명합니다. |
 | README가 부실함 | 문서화를 마지막 작업으로만 생각함 | 중간 점검 때 README 초안을 제출하게 합니다. |
 | 기능이 너무 많아 미완성됨 | MVP 범위 설정 실패 | 핵심 입력, AI 처리, 출력 결과만 남기게 합니다. |
@@ -269,3 +247,6 @@ API Key, token, password, credentials.json, auth.json, .env 파일이 포함되�
 
 강사의 핵심 역할은 Codex가 만든 결과를 대신 검증해주는 것이 아니라, 수강생이 요구사항, 범위, 실행, 테스트, 문서화의 흐름을 스스로 익히도록 돕는 것입니다.
 
+## 개정 설치·평가 기준
+
+이전의 전역 일괄 복사 명령 대신 [install-test.md](install-test.md)를 사용합니다. [course-workflow.md](course-workflow.md)의 단계 판정과 템플릿을 공통 평가 기준으로 삼습니다. [environment.md](environment.md)의 모델·MCP·버전을 수업 전에 결정하고 기록합니다. [team-delivery.md](team-delivery.md)와 [advanced-labs.md](advanced-labs.md)는 해당 실습만 적용합니다. 모델 응답은 문장 일치가 아니라 계약과 근거로 평가합니다.

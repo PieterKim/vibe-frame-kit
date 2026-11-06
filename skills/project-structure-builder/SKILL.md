@@ -1,3 +1,16 @@
+---
+name: project-structure-builder
+description: 합의한 MVP의 모듈 및 데이터 계약을 설계하거나 요청된 초기 구조를 생성할 때 사용합니다.
+---
+
+## 공통 산출물 계약
+
+- 본문 예시는 설명용입니다. 최종 필수 구조는 `templates/project-structure-template.md`를 단일 기준으로 사용합니다.
+- 프로젝트 설치에서는 프로젝트 루트의 `templates/`, `docs/`, `agents/`를 읽습니다. 전역 설치에서는 `$CODEX_HOME/vibe-frame-kit/`(미설정 시 `~/.codex/vibe-frame-kit/`)의 같은 자료를 읽습니다.
+- `docs/course-workflow.md`의 해당 단계 완료 기준으로 통과 / 보완 필요 / 확인 필요와 근거를 기록합니다. 적용되지 않는 항목도 이유를 남깁니다.
+- 계획만 요청받으면 코드나 실행 환경을 생성하지 않습니다. 다음 단계는 사용자가 요청한 범위 안에서만 수행합니다.
+- 구현·수정 시 `templates/test-scenario-template.md`에 자동/수동 구분, 기대값, 실제 결과, 통과/실패/미실행 및 이유를 기록합니다. 안내만 했으면 실행 완료로 보고하지 않습니다.
+
 # Project Structure Builder
 
 ## 1. 목적
@@ -163,7 +176,7 @@ openai
 Gemini API를 사용할 경우:
 
 ```text
-google-generativeai
+google-genai
 ```
 
 LangChain 또는 LangGraph 확장이 필요한 경우:
@@ -227,7 +240,7 @@ Codex는 다음 순서로 프로젝트 구조를 생성합니다.
 - 기존 파일을 임의로 삭제하지 않습니다.
 - 기존 구조가 있으면 그 구조를 우선 존중합니다.
 - 불필요하게 복잡한 아키텍처를 만들지 않습니다.
-- MVP에 필요 없는 고급 기능은 placeholder 또는 후순위로 둡니다.
+- MVP에 필요 없는 고급 기능은 문서의 후순위로만 남기며 파일은 만들지 않습니다.
 - 사용자가 이해할 수 있도록 각 폴더의 목적을 설명합니다.
 
 ## 9. 예시 폴더 구조
@@ -298,3 +311,6 @@ ai-service-project/
             └── ai_service.py
 ```
 
+## Gemini SDK 선택
+
+신규 Gemini 실습은 `google-genai`의 `from google import genai`와 `genai.Client()`를 사용합니다. 모델명은 환경 기준 결정 전 임의 확정하지 않습니다. 실제 키 없이 연결을 실행하지 않습니다. 공식 안내: https://ai.google.dev/gemini-api/docs/libraries .

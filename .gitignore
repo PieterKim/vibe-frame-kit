@@ -90,3 +90,9 @@ desktop.ini
 *.swp
 *.swo
 *~
+
+# Installer recovery state (do not publish project-local backups)
+.vibe-frame-kit-install.json
+.vibe-frame-kit-backups/
+vibe-frame-kit-backups/
+__pycache__/

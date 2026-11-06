@@ -1,3 +1,16 @@
+---
+name: ai-agent-workflow-builder
+description: 다단계 AI 처리의 역할, 상태, 조건 분기와 제한된 재시도를 설계할 때 사용합니다.
+---
+
+## 공통 산출물 계약
+
+- 본문 예시는 설명용입니다. 최종 필수 구조는 `templates/agent-workflow-template.md`를 단일 기준으로 사용합니다.
+- 프로젝트 설치에서는 프로젝트 루트의 `templates/`, `docs/`, `agents/`를 읽습니다. 전역 설치에서는 `$CODEX_HOME/vibe-frame-kit/`(미설정 시 `~/.codex/vibe-frame-kit/`)의 같은 자료를 읽습니다.
+- `docs/course-workflow.md`의 해당 단계 완료 기준으로 통과 / 보완 필요 / 확인 필요와 근거를 기록합니다. 적용되지 않는 항목도 이유를 남깁니다.
+- 계획만 요청받으면 코드나 실행 환경을 생성하지 않습니다. 다음 단계는 사용자가 요청한 범위 안에서만 수행합니다.
+- 구현·수정 시 `templates/test-scenario-template.md`에 자동/수동 구분, 기대값, 실제 결과, 통과/실패/미실행 및 이유를 기록합니다. 안내만 했으면 실행 완료로 보고하지 않습니다.
+
 # AI Agent Workflow Builder
 
 ## 1. 목적
@@ -247,72 +260,9 @@ LangGraph 확장 기준:
 - 조건 분기는 명확한 boolean 또는 enum 값으로 판단합니다.
 - 복잡한 graph를 처음부터 만들지 않고 MVP 흐름부터 구성합니다.
 
-## 9. 산출물 형식
+## 9. 산출물 기준
 
-Codex는 Agent Workflow 설계 결과를 아래 형식으로 작성합니다.
-
-````markdown
-# AI Agent Workflow 설계서
-
-## 1. Workflow 목표
-
-- 프로젝트 또는 기능명:
-- Workflow 한 줄 설명:
-- 해결하려는 작업:
-
-## 2. Agent 목록
-
-| Agent | 역할 | 입력 | 처리 | 출력 |
-| --- | --- | --- | --- | --- |
-|  |  |  |  |  |
-
-## 3. Workflow 흐름
-
-```text
-
-```
-
-## 4. 조건 분기
-
-| 조건 | 이동할 단계 | 설명 |
-| --- | --- | --- |
-|  |  |  |
-
-## 5. 검증 기준
-
-- 
-- 
-- 
-
-## 6. LangGraph 확장 구조
-
-### State
-
-```python
-
-```
-
-### Nodes
-
-```text
-
-```
-
-### Edges
-
-```text
-
-```
-
-## 7. MVP 구현 범위
-
-- 포함:
-- 제외:
-
-## 8. 주의사항
-
-- 
-````
+공통 산출물 계약에서 지정한 템플릿을 사용합니다. 추가 분석은 그 결과와 함께 설명합니다.
 
 ## 10. workflow 다이어그램 예시
 
@@ -380,3 +330,6 @@ Codex는 Agent Workflow 설계 결과를 아래 형식으로 작성합니다.
 → [End]
 ```
 
+## 실패·재시도와 외부 작업
+
+`templates/agent-workflow-template.md`의 attempt/max_attempts, 실패 종료, completed_actions를 설계에 포함합니다. 본문의 재생성 화살표는 반드시 시도 한도 내에서만 허용합니다. 시간 초과는 성공 여부가 불확실할 수 있으므로 발송·등록을 즉시 재실행하지 않습니다. 결과 조회가 불가능하면 중단하고 불확실을 보고합니다. 선택 실습만 `docs/advanced-labs.md`를 적용합니다.

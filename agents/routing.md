@@ -105,3 +105,9 @@ refactoring-coach
 readme-report-writer
 security-checker
 ```
+
+## 실제 호출과 단계 경계
+
+이 파일은 에이전트 생성 설정이 아니라 Skill 선택 안내입니다. 여러 Agent를 자동 생성하지 않습니다. 이름을 직접 지정하려면 `$requirements-definition`, `$function-breakdown`, `$mvp-planning`, `$project-structure-builder`, `$api-service-builder`, `$ai-agent-workflow-builder`, `$debugging-coach`, `$refactoring-coach`, `$readme-report-writer`, `$security-checker`로 요청합니다.
+
+[수업 단계별 입출력과 완료 기준](../docs/course-workflow.md)을 함께 사용합니다. 이미 제공된 문서는 검토·보완하여 재사용합니다. 구현 가능한 작은 수정은 불필요하게 전체 기획을 다시 시작하지 않습니다. 계획 요청에서는 문서만 작성합니다.

@@ -1,3 +1,16 @@
+---
+name: function-breakdown
+description: 요구사항을 추적 가능한 기능과 입출력 및 실패 흐름으로 분해할 때 사용합니다.
+---
+
+## 공통 산출물 계약
+
+- 본문 예시는 설명용입니다. 최종 필수 구조는 `templates/function-breakdown-template.md`를 단일 기준으로 사용합니다.
+- 프로젝트 설치에서는 프로젝트 루트의 `templates/`, `docs/`, `agents/`를 읽습니다. 전역 설치에서는 `$CODEX_HOME/vibe-frame-kit/`(미설정 시 `~/.codex/vibe-frame-kit/`)의 같은 자료를 읽습니다.
+- `docs/course-workflow.md`의 해당 단계 완료 기준으로 통과 / 보완 필요 / 확인 필요와 근거를 기록합니다. 적용되지 않는 항목도 이유를 남깁니다.
+- 계획만 요청받으면 코드나 실행 환경을 생성하지 않습니다. 다음 단계는 사용자가 요청한 범위 안에서만 수행합니다.
+- 구현·수정 시 `templates/test-scenario-template.md`에 자동/수동 구분, 기대값, 실제 결과, 통과/실패/미실행 및 이유를 기록합니다. 안내만 했으면 실행 완료로 보고하지 않습니다.
+
 # Function Breakdown
 
 ## 1. 목적
@@ -214,4 +227,3 @@ Codex는 기능 분해 결과를 아래 표 형식으로 작성합니다.
 6. 오류 처리
 7. README 작성
 8. 저장, PDF 다운로드, 로그인 등 후순위 기능
-

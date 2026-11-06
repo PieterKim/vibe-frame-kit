@@ -1,3 +1,16 @@
+---
+name: api-service-builder
+description: API 명세, 입력 검증, 계층 분리와 구현 및 API 테스트가 필요할 때 사용합니다.
+---
+
+## 공통 산출물 계약
+
+- 본문 예시는 설명용입니다. 최종 필수 구조는 `templates/api-spec-template.md`를 단일 기준으로 사용합니다.
+- 프로젝트 설치에서는 프로젝트 루트의 `templates/`, `docs/`, `agents/`를 읽습니다. 전역 설치에서는 `$CODEX_HOME/vibe-frame-kit/`(미설정 시 `~/.codex/vibe-frame-kit/`)의 같은 자료를 읽습니다.
+- `docs/course-workflow.md`의 해당 단계 완료 기준으로 통과 / 보완 필요 / 확인 필요와 근거를 기록합니다. 적용되지 않는 항목도 이유를 남깁니다.
+- 계획만 요청받으면 코드나 실행 환경을 생성하지 않습니다. 다음 단계는 사용자가 요청한 범위 안에서만 수행합니다.
+- 구현·수정 시 `templates/test-scenario-template.md`에 자동/수동 구분, 기대값, 실제 결과, 통과/실패/미실행 및 이유를 기록합니다. 안내만 했으면 실행 완료로 보고하지 않습니다.
+
 # API Service Builder
 
 ## 1. 목적
@@ -145,11 +158,12 @@ FastAPI에서는 Pydantic schema를 사용해 Request와 Response 구조를 정�
 예시:
 
 ```python
-from pydantic import BaseModel, Field
+from typing import Annotated
+from pydantic import BaseModel, StringConstraints
 
 
 class SummarizeRequest(BaseModel):
-    text: str = Field(..., min_length=1, description="요약할 원본 텍스트")
+    text: Annotated[str, StringConstraints(strict=True, strip_whitespace=True, min_length=1)]
 
 
 class SummarizeResponse(BaseModel):
@@ -218,9 +232,10 @@ API는 실패 상황을 예측하고 일관된 오류 응답을 제공해야 합
 
 기본 예외 처리 기준:
 
-- 입력값이 비어 있으면 `400 Bad Request`를 반환합니다.
+- 입력값이 누락되거나 빈 문자열·공백 문자열·잘못된 타입이면 `422 Unprocessable Entity`를 반환합니다.
 - 요청 데이터 형식이 틀리면 FastAPI/Pydantic의 `422 Unprocessable Entity`를 활용합니다.
-- 외부 AI API 호출에 실패하면 `502 Bad Gateway` 또는 `500 Internal Server Error`를 반환합니다.
+- 외부 제공자의 타임아웃·연결 실패·요청 거부·사용 불가능한 응답은 `502 Bad Gateway`로 통일합니다. SDK별 제공자 오류와 응답 해석·검증 실패는 서비스 어댑터에서 `ProviderError`로 변환하고, 라우터는 `TimeoutError`, `ConnectionError`, `ProviderError`를 502로 변환합니다.
+- 예상하지 못한 애플리케이션 내부 오류는 `500 Internal Server Error`입니다. 모든 예외를 제공자 오류로 간주하지 않습니다. 사용자에게 원래 예외나 비밀값을 반환하지 않습니다.
 - 존재하지 않는 리소스는 `404 Not Found`를 반환합니다.
 - 서버 내부 오류는 상세 비밀 정보를 노출하지 않습니다.
 
@@ -228,7 +243,7 @@ API는 실패 상황을 예측하고 일관된 오류 응답을 제공해야 합
 
 ```json
 {
-  "detail": "요약할 텍스트를 입력해주세요."
+  "detail": "Summary provider unavailable"
 }
 ```
 
@@ -267,67 +282,9 @@ Swagger 테스트 기준:
 - 민감 정보가 응답에 포함되지 않습니다.
 - README에 테스트 방법을 기록할 수 있습니다.
 
-## 9. 산출물 형식
+## 9. 산출물 기준
 
-Codex는 API 설계와 구현 결과를 다음 형식으로 제공합니다.
-
-````markdown
-# API 설계 및 구현 결과
-
-## 1. API 명세
-
-| 항목 | 내용 |
-| --- | --- |
-| API 이름 |  |
-| Method |  |
-| Endpoint |  |
-| 설명 |  |
-| 성공 상태 코드 |  |
-| 실패 상태 코드 |  |
-
-## 2. Request Schema
-
-```python
-
-```
-
-## 3. Response Schema
-
-```python
-
-```
-
-## 4. 파일 구조
-
-```text
-
-```
-
-## 5. 구현 파일
-
-- `app/api/routes/...`
-- `app/api/schemas/...`
-- `app/services/...`
-
-## 6. 실행 방법
-
-```bash
-uvicorn app.main:app --reload
-```
-
-## 7. Swagger 테스트 방법
-
-- 접속 주소:
-- 입력 예시:
-- 기대 결과:
-- 오류 테스트:
-
-## 8. 주의사항
-
-- 
-````
-
-코드 수정이 포함된 경우 Codex는 어떤 파일을 왜 수정했는지 함께 설명해야 합니다.
+공통 산출물 계약에서 지정한 템플릿을 사용합니다. 추가 분석은 그 결과와 함께 설명합니다.
 
 ## 10. 예시 API 명세
 
@@ -342,7 +299,7 @@ uvicorn app.main:app --reload
 | Endpoint | `/api/summarize` |
 | 설명 | 회의록 텍스트를 입력받아 핵심 요약과 할 일 목록을 반환합니다. |
 | 성공 상태 코드 | `200 OK` |
-| 실패 상태 코드 | `400 Bad Request`, `502 Bad Gateway`, `500 Internal Server Error` |
+| 실패 상태 코드 | `422 Unprocessable Entity`, `502 Bad Gateway`, `500 Internal Server Error` |
 
 ### Request Body
 
@@ -369,18 +326,19 @@ uvicorn app.main:app --reload
 
 | 상황 | 상태 코드 | 응답 메시지 |
 | --- | --- | --- |
-| 텍스트가 비어 있음 | `400 Bad Request` | `요약할 텍스트를 입력해주세요.` |
-| AI API 호출 실패 | `502 Bad Gateway` | `AI 요약 처리 중 오류가 발생했습니다.` |
-| 알 수 없는 서버 오류 | `500 Internal Server Error` | `서버 처리 중 오류가 발생했습니다.` |
+| 텍스트 누락·빈 문자열·공백·잘못된 타입 | `422 Unprocessable Entity` | FastAPI 기본 검증 오류 `detail` 배열 |
+| 제공자 타임아웃·연결 실패·거부·사용 불가능한 응답 | `502 Bad Gateway` | `Summary provider unavailable` |
+| 예상하지 못한 애플리케이션 내부 오류 | `500 Internal Server Error` | `Internal Server Error` |
 
 ### 예시 Pydantic Schema
 
 ```python
-from pydantic import BaseModel, Field
+from typing import Annotated
+from pydantic import BaseModel, StringConstraints
 
 
 class SummarizeRequest(BaseModel):
-    text: str = Field(..., min_length=1, description="요약할 회의록 텍스트")
+    text: Annotated[str, StringConstraints(strict=True, strip_whitespace=True, min_length=1)]
 
 
 class SummarizeResponse(BaseModel):

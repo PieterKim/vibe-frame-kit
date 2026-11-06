@@ -1,3 +1,16 @@
+---
+name: security-checker
+description: 공유 및 배포 전 비밀정보, 인증과 데이터 노출을 점검할 때 사용합니다.
+---
+
+## 공통 산출물 계약
+
+- 본문 예시는 설명용입니다. 최종 필수 구조는 `templates/test-scenario-template.md`를 단일 기준으로 사용합니다.
+- 프로젝트 설치에서는 프로젝트 루트의 `templates/`, `docs/`, `agents/`를 읽습니다. 전역 설치에서는 `$CODEX_HOME/vibe-frame-kit/`(미설정 시 `~/.codex/vibe-frame-kit/`)의 같은 자료를 읽습니다.
+- `docs/course-workflow.md`의 해당 단계 완료 기준으로 통과 / 보완 필요 / 확인 필요와 근거를 기록합니다. 적용되지 않는 항목도 이유를 남깁니다.
+- 계획만 요청받으면 코드나 실행 환경을 생성하지 않습니다. 다음 단계는 사용자가 요청한 범위 안에서만 수행합니다.
+- 구현·수정 시 `templates/test-scenario-template.md`에 자동/수동 구분, 기대값, 실제 결과, 통과/실패/미실행 및 이유를 기록합니다. 안내만 했으면 실행 완료로 보고하지 않습니다.
+
 # Security Checker
 
 ## 1. 목적
@@ -234,13 +247,13 @@ GitHub push 전에는 프로젝트 전체에서 민감정보 후보를 검색합
 권장 검색 명령어:
 
 ```bash
-rg -n "API_KEY|TOKEN|PASSWORD|SECRET|CLIENT_SECRET|ACCESS_TOKEN|REFRESH_TOKEN"
+rg -l "API_KEY|TOKEN|PASSWORD|SECRET|CLIENT_SECRET|ACCESS_TOKEN|REFRESH_TOKEN"
 ```
 
 환경 파일 검색:
 
 ```bash
-rg -n "OPENAI_API_KEY|GEMINI_API_KEY|GOOGLE_API_KEY|ANTHROPIC_API_KEY"
+rg -l "OPENAI_API_KEY|GEMINI_API_KEY|GOOGLE_API_KEY|ANTHROPIC_API_KEY"
 ```
 
 인증 파일 검색:
@@ -252,19 +265,19 @@ rg --files | rg "credentials\\.json|auth\\.json|token\\.json|\\.env$|\\.env\\."
 OpenAI Key 형태 검색 예시:
 
 ```bash
-rg -n "sk-[A-Za-z0-9_-]+"
+rg -l "sk-[A-Za-z0-9_-]+"
 ```
 
 Google API Key 형태 검색 예시:
 
 ```bash
-rg -n "AIza[0-9A-Za-z_-]+"
+rg -l "AIza[0-9A-Za-z_-]+"
 ```
 
 비밀번호 후보 검색:
 
 ```bash
-rg -n "password\\s*=|PASSWORD\\s*=|pwd\\s*="
+rg -l "password\\s*=|PASSWORD\\s*=|pwd\\s*="
 ```
 
 Git에 추적 중인 민감 파일 확인:
@@ -275,7 +288,7 @@ git ls-files | rg "\\.env|credentials\\.json|auth\\.json|token\\.json|\\.pem|\\.
 
 주의:
 
-- 검색 결과에 실제 키가 보이면 답변에 그대로 복사하지 않습니다.
+- 검색은 일치한 파일명만 출력합니다. 비밀값이 포함된 줄을 터미널·도구 결과에 출력하지 않습니다.
 - 사용자에게는 "민감정보 후보가 발견됨"과 파일 위치만 알려줍니다.
 - 실제 값을 마스킹해서 설명합니다.
 
@@ -285,78 +298,6 @@ git ls-files | rg "\\.env|credentials\\.json|auth\\.json|token\\.json|\\.pem|\\.
 OPENAI_API_KEY=[masked]
 ```
 
-## 9. 산출물 형식
+## 9. 산출물 기준
 
-Codex는 보안 점검 결과를 아래 형식으로 제공합니다.
-
-````markdown
-# 보안 점검 결과
-
-## 1. 점검 범위
-
-- 점검한 파일 또는 폴더:
-- 점검한 항목:
-
-## 2. 발견된 위험
-
-| 위험 유형 | 파일 | 설명 | 조치 필요 여부 |
-| --- | --- | --- | --- |
-|  |  |  |  |
-
-## 3. 민감정보 노출 여부
-
-- API Key:
-- token:
-- password:
-- `.env`:
-- `credentials.json`:
-- `auth.json`:
-- 개인정보 데이터:
-
-## 4. 권장 조치
-
-- 
-- 
-- 
-
-## 5. .gitignore 확인
-
-포함해야 할 항목:
-
-```gitignore
-.env
-.env.*
-!.env.example
-credentials.json
-auth.json
-token.json
-*.pem
-*.key
-logs/
-uploads/
-data/raw/
-```
-
-## 6. GitHub push 전 최종 체크리스트
-
-- [ ] `.env` 파일이 GitHub에 올라가지 않습니다.
-- [ ] API Key, token, password가 코드에 직접 적혀 있지 않습니다.
-- [ ] `credentials.json`, `auth.json`, `token.json`이 포함되지 않았습니다.
-- [ ] `.env.example`에는 가짜 예시 값만 있습니다.
-- [ ] README와 보고서에 실제 비밀값이 없습니다.
-- [ ] 개인정보 포함 데이터가 저장소에 포함되지 않았습니다.
-
-## 7. 추가 안내
-
-- 
-````
-
-보안 위험을 발견한 경우 Codex는 실제 값을 출력하지 않고, 파일 위치와 조치 방법만 안내합니다.
-
-예시:
-
-```text
-민감정보 후보가 `backend/app/config.py`에서 발견되었습니다.
-실제 값은 출력하지 않습니다.
-해당 값을 `.env`로 이동하고, 코드에서는 환경 변수로 불러오도록 수정해야 합니다.
-```
+공통 산출물 계약에서 지정한 템플릿을 사용합니다. 추가 분석은 그 결과와 함께 설명합니다.

@@ -33,66 +33,9 @@ Vibe Frame Kit는 AI 서비스 프로젝트를 진행할 때 공통 개발 흐�
 
 Windows 사용자는 PowerShell을 사용하는 것을 기준으로 설명합니다.
 
-## 3. GitHub에서 Kit 다운로드
+## 3. 프로젝트 설치 및 확인
 
-GitHub에 업로드된 저장소를 내려받습니다.
-
-```powershell
-git clone https://github.com/your-org/vibe-frame-kit.git
-cd vibe-frame-kit
-```
-
-아직 실제 GitHub 주소가 정해지지 않았다면, 강사가 제공한 저장소 주소를 사용합니다.
-
-압축 파일로 받은 경우에는 압축을 풀고 해당 폴더로 이동합니다.
-
-```powershell
-cd vibe-frame-kit
-```
-
-## 4. install.ps1 실행 방법
-
-Windows PowerShell에서 아래 명령을 실행합니다.
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
-```
-
-이 명령은 현재 Kit의 다음 항목을 사용자 폴더의 `~/.codex`로 복사합니다.
-
-| 복사 대상 | 설치 위치 |
-| --- | --- |
-| `AGENTS.md` | `~/.codex/AGENTS.md` |
-| `agents/` | `~/.codex/agents/` |
-| `skills/` | `~/.codex/skills/` |
-| `config/` | `~/.codex/config/` |
-
-기존 `~/.codex/AGENTS.md`가 있으면 자동으로 백업됩니다.
-
-## 5. 설치 확인 방법
-
-설치가 끝나면 PowerShell에서 아래 명령으로 확인합니다.
-
-```powershell
-dir $HOME\.codex
-```
-
-다음 항목이 보이면 설치가 정상적으로 된 것입니다.
-
-```text
-AGENTS.md
-agents
-skills
-config
-```
-
-Skill 폴더도 확인할 수 있습니다.
-
-```powershell
-dir $HOME\.codex\skills
-```
-
-`requirements-definition`, `mvp-planning`, `debugging-coach` 같은 폴더가 보이면 됩니다.
+실제 저장소는 https://github.com/PieterKim/vibe-frame-kit.git 입니다. [설치 안내](install-test.md)의 프로젝트 범위 명령과 Codex 인식 확인을 따릅니다. 기존 AGENTS.md와 다른 Skill은 덮어쓰지 않습니다.
 
 ## 6. 프로젝트 폴더에서 Codex 실행 방법
 
@@ -166,7 +109,7 @@ AI 서비스 프로젝트 아이디어가 아직 명확하지 않아.
 
 ## 9. 오류 발생 시 요청 방법
 
-오류가 발생하면 에러 메시지 일부만 보내지 말고, 실행 상황과 전체 로그를 함께 보내야 합니다.
+오류가 발생하면 에러 메시지 일부만 보내지 말고, 실행 상황과 비밀정보를 가린 관련 로그를 함께 보내야 합니다.
 
 좋은 요청:
 
@@ -180,7 +123,7 @@ uvicorn app.main:app --reload
 FastAPI 서버가 실행되는 것
 
 오류 로그:
-[여기에 전체 오류 로그 붙여넣기]
+[여기에 비밀정보를 가린 관련 오류 흐름 붙여넣기]
 
 관련 파일:
 app/main.py
@@ -193,7 +136,7 @@ Codex에게 요청할 때는 다음을 함께 알려주면 좋습니다.
 | --- | --- |
 | 실행 명령 | `uvicorn app.main:app --reload` |
 | 기대한 동작 | 서버 실행, API 응답, 화면 표시 등 |
-| 실제 오류 | 전체 오류 로그 |
+| 실제 오류 | 비밀정보를 가린 관련 오류 흐름 |
 | 관련 파일 | 오류에 나온 파일 경로 |
 | 최근 변경 | 방금 수정한 파일이나 설치한 패키지 |
 
@@ -257,7 +200,7 @@ API Key, token, password, credentials.json, auth.json, .env 파일이 포함되�
 | 실수 | 왜 문제인가 | 좋은 방법 |
 | --- | --- | --- |
 | 처음부터 전체 시스템을 만들어 달라고 요청함 | 범위가 너무 커져 실패하기 쉽습니다. | 요구사항 정의와 MVP 설계부터 시작합니다. |
-| 오류 로그 일부만 보냄 | 원인을 정확히 찾기 어렵습니다. | 전체 로그와 실행 명령을 함께 보냅니다. |
+| 오류 로그 일부만 보냄 | 원인을 정확히 찾기 어렵습니다. | 비밀정보를 가린 관련 로그와 실행 명령을 함께 보냅니다. |
 | `.env`를 GitHub에 올림 | API Key가 노출될 수 있습니다. | `.env`는 올리지 않고 `.env.example`만 올립니다. |
 | README를 마지막에 대충 작성함 | 실행 방법과 결과를 설명하기 어렵습니다. | 개발 중간부터 README를 업데이트합니다. |
 | 기능을 너무 많이 넣으려 함 | 수업 시간 안에 완성하기 어렵습니다. | MVP에 필요한 기능만 먼저 구현합니다. |
